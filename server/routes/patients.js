@@ -26,6 +26,7 @@ const getPatients = (query) => {
 };
 
 const calculateAge = (dateString) => {
+  if (!dateString) return "-";
   const birthDate = DateTime.fromISO(dateString);
   const now = DateTime.now();
 
@@ -36,17 +37,17 @@ const calculateAge = (dateString) => {
 };
 
 const getGivenName = (name) => {
-  return name.given ? name.given.join(" ") : "n/a";
+  return name.given ? name.given.join(" ") : "-";
 };
 
 const getName = (patientName) => {
   const officialName = patientName
     ? _.find(patientName, { use: "official" }) || patientName[0]
-    : { text: "n/a" };
+    : { text: "-" };
 
   return officialName.text
     ? officialName.text
-    : `${officialName.family}, ${getGivenName(officialName)}`;
+    : `${officialName.family || "-"}, ${getGivenName(officialName)}`;
 };
 
 const transformPatientsOut = (patients) => {
@@ -54,8 +55,8 @@ const transformPatientsOut = (patients) => {
     return {
       id: patient.resource.id,
       name: getName(patient.resource.name),
-      birthDate: patient.resource.birthDate,
-      gender: patient.resource.gender,
+      birthDate: patient.resource.birthDate || "-",
+      gender: patient.resource.gender || "-",
       age: calculateAge(patient.resource.birthDate),
     };
   });

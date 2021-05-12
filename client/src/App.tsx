@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css";
+import "./App.scss";
 import axios from "axios";
 import Patients from "./components/patients/Patients";
 
@@ -31,13 +31,34 @@ function App() {
       });
   };
 
+  const handleFilterPediatricPatients = () => {};
+  const handleViewStats = () => {};
+
   return (
-    <div>
-      <button onClick={handleGetPatients}>Fetch Patients</button>
+    <div className="columns">
+      <div className="column">
+        <div className="container">
+          <div className="title">FHIR Demo</div>
+          <div className="buttons">
+            <button className="button is-primary" onClick={handleGetPatients}>
+              Fetch Patients
+            </button>
+            <button
+              className="button is-light"
+              onClick={handleFilterPediatricPatients}
+            >
+              Filter Pediatric Patients
+            </button>
+            <button className="button is-info" onClick={handleViewStats}>
+              Show Stats
+            </button>
+          </div>
+        </div>
 
-      {isLoading && <p>Loading...</p>}
+        {isLoading && <p className="loading">Loading...</p>}
 
-      {!isLoading && <Patients patients={patients} />}
+        {!isLoading && <Patients patients={patients} />}
+      </div>
     </div>
   );
 }
