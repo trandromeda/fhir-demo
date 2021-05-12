@@ -1,24 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import axios from "axios";
+import Patients from "./components/patients/Patients";
+
+interface IPatient {
+  id: string;
+  name?: Array<any>;
+  birthDate?: string;
+  gender?: string;
+  age?: number;
+}
 
 function App() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [patients, setPatients] = useState<IPatient[]>([]);
+
+  const handleGetPatients = () => {
+    setIsLoading(true);
+    axios
+      .get("/patients?birthdate=1951-01-01")
+      .then((res: { data: { patients: IPatient[]; next: string } }) => {
+        const body = res.data;
+        console.log(body);
+        setPatients(res.data.patients);
+        setIsLoading(false);
+      });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={handleGetPatients}>Fetch Patients</button>
+
+      {isLoading && <p>Loading...</p>}
+
+      {!isLoading && <Patients patients={patients} />}
     </div>
   );
 }
