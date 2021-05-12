@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
 interface IPatient {
-  fullUrl: any;
-  resource: any;
+  id: string;
+  name?: Array<any>;
+  birthDate?: string;
+  gender?: string;
+  age?: number;
 }
-function Patients() {
-  const [patients, setPatients] = useState([]);
 
-  useEffect(() => {
-    axios.get("/patients/test").then((res) => {
-      const body = res.data;
-      console.log(body);
-      setPatients(res.data.entry);
-    });
-  }, []);
+type Props = {
+  patients: IPatient[];
+};
 
-  if (patients.length) {
+function Patients(props: Props) {
+  if (props.patients.length) {
     return (
       <div className="Patients">
-        <ul>
-          {patients.length &&
-            patients.map((patient: IPatient) => {
-              return <li key={patient.resource.id}>{patient.fullUrl}</li>;
+        <table>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>name</th>
+              <th>gender</th>
+              <th>birthdate</th>
+              <th>age</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.patients.map((patient) => {
+              return (
+                <tr key={patient.id}>
+                  <td>{patient.id}</td>
+                  <td>{patient.name}</td>
+                  <td>{patient.gender}</td>
+                  <td>{patient.birthDate}</td>
+                  <td>{patient.age}</td>
+                </tr>
+              );
             })}
-        </ul>
+          </tbody>
+        </table>
       </div>
     );
-  } else return <div>Fetching patients...</div>;
+  } else return <div>Click 'Fetch Patients' to get started</div>;
 }
 
 export default Patients;
