@@ -1,3 +1,5 @@
+import "./Patients.scss";
+
 interface IPatient {
   id: string;
   name?: Array<any>;
@@ -14,7 +16,7 @@ function Patients(props: Props) {
   if (props.patients.length) {
     return (
       <div className="Patients">
-        <table>
+        <table className="table is-fullwidth is-striped">
           <thead>
             <tr>
               <th>id</th>
@@ -40,7 +42,10 @@ function Patients(props: Props) {
         </table>
       </div>
     );
-  } else return <div>Click 'Fetch Patients' to get started</div>;
+  } else
+    return (
+      <div className="instructions">Click 'Fetch Patients' to get started</div>
+    );
 }
 
 export default Patients;
