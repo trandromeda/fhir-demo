@@ -1,0 +1,18 @@
+@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/grid/columns.sass";
+@import "bulma/sass/elements/button.sass";
+@import "bulma/sass/elements/title.sass";
+@import "bulma/sass/layout/_all.sass";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1em;
+}
+
+.loading {
+  text-align: center;
+}
