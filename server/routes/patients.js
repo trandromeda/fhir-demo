@@ -11,6 +11,7 @@ const instance = axios.create({
 });
 
 const getPatients = (query) => {
+  /** there are many instances of patients with birthdates in the future, which is impossible */
   const today = DateTime.now().toISODate();
   const response = instance.get(`Patient?birthdate=lt${today}&${query}`);
   return response;
