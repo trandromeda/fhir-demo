@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.scss";
 import axios from "axios";
 import Patients from "./components/patients/Patients";
+import Stats from "./components/stats/Stats";
 
 interface IPatient {
   id: string;
@@ -18,6 +19,7 @@ interface IPatient {
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [patients, setPatients] = useState<IPatient[]>([]);
+  const [showStats, setShowStats] = useState<boolean>(false);
 
   const handleGetPatients = () => {
     setIsLoading(true);
@@ -32,7 +34,9 @@ function App() {
   };
 
   const handleFilterPediatricPatients = () => {};
-  const handleViewStats = () => {};
+  const handleViewStats = () => {
+    setShowStats(!showStats);
+  };
 
   return (
     <div className="columns">
@@ -57,7 +61,12 @@ function App() {
 
         {isLoading && <p className="loading">Loading...</p>}
 
-        {!isLoading && <Patients patients={patients} />}
+        {!isLoading && (
+          <div>
+            {showStats && <Stats patients={patients} />}
+            <Patients patients={patients} />
+          </div>
+        )}
       </div>
     </div>
   );
