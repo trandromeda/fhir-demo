@@ -1,12 +1,5 @@
+import { IPatient } from "../../models/patient.model";
 import "./Patients.scss";
-
-interface IPatient {
-  id: string;
-  name?: Array<any>;
-  birthDate?: string;
-  gender?: string;
-  age?: number;
-}
 
 type Props = {
   patients: IPatient[];
