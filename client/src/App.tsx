@@ -3,37 +3,31 @@ import "./App.scss";
 import axios from "axios";
 import Patients from "./components/patients/Patients";
 import Stats from "./components/stats/Stats";
+import { IPatient } from "./models/patient.model";
+import { IFilters } from "./models/filters.model";
 
-interface IPatient {
-  id: string;
-  name?: Array<any>;
-  birthDate?: string;
-  gender?: string;
-  age?: number;
-}
-
-interface IPatient {
-  fullUrl: any;
-  resource: any;
-}
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [patients, setPatients] = useState<IPatient[]>([]);
   const [showStats, setShowStats] = useState<boolean>(false);
+  const [filters, setFilters] = useState<IFilters>({ maxAge: undefined });
 
   const handleGetPatients = () => {
     setIsLoading(true);
     axios
       .get("/patients?birthdate=1951-01-01")
       .then((res: { data: { patients: IPatient[]; next: string } }) => {
-        const body = res.data;
-        console.log(body);
         setPatients(res.data.patients);
         setIsLoading(false);
       });
   };
 
-  const handleFilterPediatricPatients = () => {};
+  const handleFilterPediatricPatients = () => {
+    setFilters({
+      maxAge: filters.maxAge ? undefined : 18,
+    });
+  };
+
   const handleViewStats = () => {
     setShowStats(!showStats);
   };
@@ -48,7 +42,7 @@ function App() {
               Fetch Patients
             </button>
             <button
-              className="button is-light"
+              className={`button is-light ${filters.maxAge ? "is-active" : ""}`}
               onClick={handleFilterPediatricPatients}
             >
               Filter Pediatric Patients
@@ -64,7 +58,7 @@ function App() {
         {!isLoading && (
           <div>
             {showStats && <Stats patients={patients} />}
-            <Patients patients={patients} />
+            <Patients patients={patients} filters={filters} />
           </div>
         )}
       </div>

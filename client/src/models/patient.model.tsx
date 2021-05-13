@@ -1,7 +1,7 @@
 export interface IPatient {
   id: string;
   name?: Array<any>;
-  birthDate?: string;
+  birthDate: string;
   gender?: string;
-  age?: number;
+  age: number;
 }

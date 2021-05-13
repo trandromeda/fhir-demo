@@ -1,12 +1,29 @@
+import { useEffect, useState } from "react";
+import { IFilters } from "../../models/filters.model";
 import { IPatient } from "../../models/patient.model";
 import "./Patients.scss";
 
 type Props = {
   patients: IPatient[];
+  filters: IFilters;
 };
 
 function Patients(props: Props) {
-  if (props.patients.length) {
+  const [patients, setPatients] = useState<IPatient[]>([]);
+
+  useEffect(() => {
+    let filteredPatients = props.patients;
+    if (props.filters.maxAge) {
+      const maxAge = props.filters.maxAge;
+      filteredPatients = props.patients.filter(
+        (patient) => patient.age < maxAge
+      );
+    }
+
+    setPatients(filteredPatients);
+  }, [props.filters, props.patients]);
+
+  if (patients.length) {
     return (
       <div className="Patients">
         <table className="table is-fullwidth is-striped">
@@ -20,7 +37,7 @@ function Patients(props: Props) {
             </tr>
           </thead>
           <tbody>
-            {props.patients.map((patient) => {
+            {patients.map((patient) => {
               return (
                 <tr key={patient.id}>
                   <td>{patient.id}</td>
