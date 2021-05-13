@@ -11,7 +11,8 @@ const instance = axios.create({
 });
 
 const getPatients = (query) => {
-  const response = instance.get(`Patient?${query}`);
+  const today = DateTime.now().toISODate();
+  const response = instance.get(`Patient?birthdate=lt${today}&${query}`);
   return response;
 
   /** to recursively fetch all of the bundle */
@@ -47,7 +48,7 @@ const getName = (patientName) => {
 
   return officialName.text
     ? officialName.text
-    : `${officialName.family || "-"}, ${getGivenName(officialName)}`;
+    : `${officialName.family || "n/a"}, ${getGivenName(officialName)}`;
 };
 
 const transformPatientsOut = (patients) => {
