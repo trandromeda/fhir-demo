@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IPatient } from "../../models/patient.model";
 import "./Stats.scss";
 
@@ -7,15 +7,12 @@ type Props = {
 };
 
 function Stats(props: Props) {
-  const [numPatients, setNumPatients] = useState<number>(0);
-  const [averageAge, setAverageAge] = useState<number>(0);
-  const [numPediatricPatients, setNumPediatricPatients] = useState<number>(0);
-
-  useEffect(() => {
-    setNumPatients(props.patients.length);
+  const numPatients = useMemo(() => {
+    console.log("call numPatients");
+    return props.patients.length;
   }, [props.patients.length]);
 
-  useEffect(() => {
+  const averageAge = useMemo(() => {
     const ageReducer = (
       acc: number,
       cv: IPatient,
@@ -27,15 +24,13 @@ function Stats(props: Props) {
         return acc / arr.length;
       } else return acc + (typeof cv.age === "number" ? cv.age : 0);
     };
-    const averageAge = props.patients.reduce(ageReducer, 0);
-    setAverageAge(averageAge);
+    return props.patients.reduce(ageReducer, 0);
   }, [props.patients]);
 
-  useEffect(() => {
-    const pediatricPatientsCount = props.patients.filter((patient) => {
+  const numPediatricPatients = useMemo(() => {
+    return props.patients.filter((patient) => {
       return patient.age ? patient.age < 18 : false;
-    });
-    setNumPediatricPatients(pediatricPatientsCount.length);
+    }).length;
   }, [props.patients]);
 
   return (

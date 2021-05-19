@@ -55,12 +55,10 @@ function App() {
 
         {isLoading && <p className="loading">Loading...</p>}
 
-        {!isLoading && (
-          <div>
-            {showStats && <Stats patients={patients} />}
-            <Patients patients={patients} filters={filters} />
-          </div>
-        )}
+        <div>
+          {showStats && <Stats patients={patients} />}
+          <Patients patients={patients} filters={filters} />
+        </div>
       </div>
     </div>
   );
